@@ -7,7 +7,14 @@ public class Player : MonoBehaviour
     public float xSpeed;
     public float ySpeed;
 
-    private Rigidbody2D rb; 
+    public GameObject playerProjectile;
+
+    private Rigidbody2D rb;
+
+    private float shootTimer = 0f;
+    private float shootTimeLimit = 3f;
+
+    private bool canShot = true;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +27,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         checkInput();
+        checkCanShoot();
     }
 
     private void checkInput(){
@@ -34,6 +42,11 @@ public class Player : MonoBehaviour
 
         if(Input.GetKey(KeyCode.S))
             movePlayer("y", -1);
+
+        if(Input.GetKeyDown(KeyCode.Space) && canShot){
+            shootTimer = 0f;
+            shoot(); 
+        } 
     }
 
     private void movePlayer(string direction, int forward){
@@ -42,5 +55,24 @@ public class Player : MonoBehaviour
 
         if(direction.ToUpper().Equals("Y"))
             rb.AddForce(new Vector2(0, forward*ySpeed));
+    }
+
+    private void checkCanShoot(){
+        if(shootTimer <= shootTimeLimit){
+            canShot = false;
+            shootTimer += .1f;
+        }
+        else
+            canShot = true;
+    }
+
+    private void shoot() {
+        GameObject projectile = GameObject.Instantiate(playerProjectile);
+
+        projectile.name = "PlayerProjectile";
+        projectile.transform.SetParent(GameObject.Find("PlayerProjectiles").transform);
+
+        Vector3 pos = this.transform.localPosition;
+        projectile.transform.localPosition = new Vector3 (pos.x, pos.y + .7f, pos.z);
     }
 }

@@ -498,6 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSpeed: 3
   ySpeed: 3
+  playerProjectile: {fileID: 4293562325860745999, guid: 1141a2d459cc44b4db253fabf20edb88, type: 3}
 --- !u!1 &761560311
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,6 +865,8 @@ MonoBehaviour:
   xLimits:
   - -2
   - 0
+  enemyProjectile: {fileID: 1449903371448130903, guid: b6ac967dbf1773d408def539bd2867ba, type: 3}
+  shootChance: 0.779
 --- !u!1 &1590394178
 GameObject:
   m_ObjectHideFlags: 0

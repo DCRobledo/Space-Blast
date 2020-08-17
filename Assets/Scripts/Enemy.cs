@@ -8,6 +8,11 @@ public class Enemy : MonoBehaviour
 
     public float[] xLimits;
 
+    public GameObject enemyProjectile;
+
+    [Range (0, 2)]
+    public float shootChance;
+
     private bool isGoingRight = true;
 
     private Rigidbody2D rb; 
@@ -23,6 +28,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         moveShooter();
+        shoot();
     }
 
     private void moveShooter(){
@@ -37,6 +43,20 @@ public class Enemy : MonoBehaviour
                 isGoingRight = !isGoingRight;
             else
                 rb.AddForce(new Vector2(-xSpeed, 0));
+        }
+    }
+
+    private void shoot() {
+        int rnd = Random.Range(0, 500);
+
+        if(rnd < shootChance){
+            GameObject projectile = GameObject.Instantiate(enemyProjectile);
+
+            projectile.name = "EnemyProjectile";
+            projectile.transform.SetParent(GameObject.Find("EnemyProjectiles").transform);
+
+            Vector3 pos = this.transform.localPosition;
+            projectile.transform.localPosition = new Vector3 (pos.x, pos.y - 1.3f, pos.z);
         }
     }
 }
