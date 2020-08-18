@@ -34,11 +34,23 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collider) {
         if(isPlayerProjectile)
             checkCollisionOnEnemy(collider);
+        if(!isPlayerProjectile)
+            checkCollisionOnPlayer(collider);
 
         Destroy(this.gameObject);
     }
 
     private void checkCollisionOnEnemy(Collision2D collider){
-        Destroy(collider.gameObject);
+        if(collider.gameObject.tag.Equals("Enemy")){
+            GameObject.Find("UI").GetComponent<UI>().playerScore += 250;
+
+            Destroy(collider.gameObject);
+        }
+    }
+
+    private void checkCollisionOnPlayer(Collision2D collider){
+        if(collider.gameObject.tag.Equals("Player")){
+            GameObject.Find("UI").GetComponent<UI>().playerHit();
+        }
     }
 }

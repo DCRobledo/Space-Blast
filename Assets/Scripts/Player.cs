@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 
     public GameObject playerProjectile;
 
+    public bool isRecovering = false;
+
     private Rigidbody2D rb;
 
     private float shootTimer = 0f;
@@ -74,5 +76,13 @@ public class Player : MonoBehaviour
 
         Vector3 pos = this.transform.localPosition;
         projectile.transform.localPosition = new Vector3 (pos.x, pos.y + .7f, pos.z);
+    }
+
+    public IEnumerator recover(){
+        isRecovering = true;
+
+        yield return new WaitForSeconds(2f);
+
+        isRecovering = false;
     }
 }
