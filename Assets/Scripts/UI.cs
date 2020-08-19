@@ -65,7 +65,10 @@ public class UI : MonoBehaviour
     public void playerHit(){
         if(!GameObject.Find("Player").GetComponent<Player>().isRecovering){
             StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
-           playerLives--;
+            if(!GameObject.Find("Player").GetComponent<Player>().shieldUp)
+                playerLives--;
+            else
+                GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
         }
     }
 }
