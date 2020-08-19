@@ -44,6 +44,8 @@ public class Projectile : MonoBehaviour
         if(collider.gameObject.tag.Equals("Enemy")){
             GameObject.Find("UI").GetComponent<UI>().playerScore += 250;
 
+            GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+
             Destroy(collider.gameObject);
         }
     }

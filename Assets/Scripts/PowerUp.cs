@@ -20,6 +20,8 @@ public class PowerUp : MonoBehaviour
     {
         if(collider.gameObject.tag.Equals("Player"))
             GameObject.Find("Player").GetComponent<Player>().shield();
+
+        GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
         
         Destroy(this.gameObject);
     }
