@@ -170,9 +170,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50e27c4f2a3097a4190be00fe19e3d15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSpeed: 2
+  xSpeed: 0.5
   xLimits:
   - -2
   - 0
   enemyProjectile: {fileID: 1449903371448130903, guid: b6ac967dbf1773d408def539bd2867ba, type: 3}
-  shootChance: 1.71
+  shootChance: 0.958

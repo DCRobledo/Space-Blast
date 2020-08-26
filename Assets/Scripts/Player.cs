@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
 
     private float shootTimer = 0f;
-    private float shootTimeLimit = 3f;
+    private float shootTimeLimit = 6f;
 
     private bool canShot = true;
 

@@ -47,7 +47,7 @@ public class Enemy : MonoBehaviour
     }
 
     private void shoot() {
-        int rnd = Random.Range(0, 500);
+        int rnd = Random.Range(0, 5000);
 
         if(rnd < shootChance){
             GameObject projectile = GameObject.Instantiate(enemyProjectile);

@@ -39,7 +39,7 @@ public class GameController : MonoBehaviour
         int entitySelector = Random.Range(0, list.Count);
 
         //Control the spawnChance
-        int rnd = Random.Range(0, 1000);
+        int rnd = Random.Range(0, 10000);
         if(rnd <= list[entitySelector].spawnChance && controller){
             //Increase number of entities
             if(isEnemy)
