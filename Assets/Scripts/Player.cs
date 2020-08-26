@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public GameObject playerProjectile;
 
     public bool isRecovering = false;
+    public bool shieldUp = false;
+
 
     private Rigidbody2D rb;
 
@@ -30,6 +32,7 @@ public class Player : MonoBehaviour
     {
         checkInput();
         checkCanShoot();
+        updateShield();
     }
 
     private void checkInput(){
@@ -84,5 +87,14 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         isRecovering = false;
+    }
+
+    public void shield(){
+        if(!shieldUp)
+            shieldUp = true;
+    }
+
+    private void updateShield(){
+        GameObject.Find("shield").GetComponent<SpriteRenderer>().enabled = shieldUp;
     }
 }
