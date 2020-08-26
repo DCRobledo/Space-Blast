@@ -18,12 +18,13 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject.tag.Equals("Player"))
+        if(collider.gameObject.tag.Equals("Player")){
             GameObject.Find("Player").GetComponent<Player>().shield();
 
-        GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
-        
-        Destroy(this.gameObject);
+            GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
+            
+            Destroy(this.gameObject);
+        }
     }
 
 }

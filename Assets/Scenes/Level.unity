@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 184641979}
   m_Layer: 0
   m_Name: UpBorder
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -274,7 +274,7 @@ GameObject:
   - component: {fileID: 328124993}
   m_Layer: 0
   m_Name: LeftBorder
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -893,6 +893,14 @@ MonoBehaviour:
   - entity: {fileID: 8413712544537987413, guid: 11cc0b5bec52e924daf72e7873e96876, type: 3}
     xLimits: f6ffffff05000000
     yLimits: 0400000004000000
+    spawnChance: 8
+  - entity: {fileID: 4212431229369216576, guid: 605b673fbbdb5b143b14f83881dfdaa8, type: 3}
+    xLimits: f6ffffff05000000
+    yLimits: 02000000feffffff
+    spawnChance: 5
+  - entity: {fileID: 44450419204116469, guid: 88fc4781941621a48a60d5d07cf7377a, type: 3}
+    xLimits: f6ffffff05000000
+    yLimits: fdfffffffdffffff
     spawnChance: 10
   powerUps:
   - entity: {fileID: 3060620719790364401, guid: ac7ffbb83b4a6f240ac27825fd02e16c, type: 3}
@@ -1360,7 +1368,7 @@ GameObject:
   - component: {fileID: 1590394180}
   m_Layer: 0
   m_Name: RightBorder
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1612,7 +1620,7 @@ GameObject:
   - component: {fileID: 1815646128}
   m_Layer: 0
   m_Name: DownBorder
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

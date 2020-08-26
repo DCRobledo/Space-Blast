@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float xSpeed;
+    public float ySpeed;
 
     public float[] xLimits;
 
@@ -13,7 +14,20 @@ public class Enemy : MonoBehaviour
     [Range (0, 2)]
     public float shootChance;
 
+    public enum enemyType {
+        SHOOTER,
+        UFO,
+        ROCKET
+    }
+
+    public enemyType type;
+
+    private float[] yPeaks;
+
+    private bool isGoingUp = true;
+    private bool reachPeak = false;
     private bool isGoingRight = true;
+    private bool canShot;
 
     private Rigidbody2D rb; 
 
@@ -22,13 +36,29 @@ public class Enemy : MonoBehaviour
     {
         rb = this.GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
+
+        isGoingRight = this.transform.localPosition.x < 0;
+
+        canShot = type == enemyType.SHOOTER;
+
+        float[] UFOPeaks = {this.transform.localPosition.y + .2f, this.transform.localPosition.y - .2f};
+        yPeaks = UFOPeaks;
     }
 
     // Update is called once per frame
     void Update()
     {
-        moveShooter();
-        shoot();
+        moveEnemy();
+        if(canShot)
+            shoot();
+    }
+
+    private void moveEnemy() {
+        switch(type){
+            case enemyType.SHOOTER: moveShooter(); break;
+            case enemyType.UFO: moveUFO(); break;
+            default: moveRocket(); break;
+        }
     }
 
     private void moveShooter(){
@@ -46,6 +76,30 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void moveUFO(){
+        Vector3 pos = this.transform.localPosition;
+
+        if(isGoingRight) rb.AddForce(new Vector2(xSpeed*.2f, 0));
+        else rb.AddForce(new Vector2(-xSpeed*.2f, 0));
+
+        if(isGoingUp){
+            rb.AddForce(new Vector2(0, ySpeed));
+
+            reachPeak = pos.y >= yPeaks[0];
+        }
+        else{ 
+            rb.AddForce(new Vector2(0, -ySpeed));
+
+            reachPeak = pos.y <= yPeaks[1];
+        }
+
+        if(reachPeak) isGoingUp = !isGoingUp;
+    }
+
+    private void moveRocket(){
+        rb.AddForce(new Vector2(0, ySpeed));
+    }
+
     private void shoot() {
         int rnd = Random.Range(0, 5000);
 
@@ -57,6 +111,40 @@ public class Enemy : MonoBehaviour
 
             Vector3 pos = this.transform.localPosition;
             projectile.transform.localPosition = new Vector3 (pos.x, pos.y - 1.3f, pos.z);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collider) {
+        switch(collider.transform.tag){
+            case "Player": collisionWithPlayer(); break;
+            case "Enemy": collisionWithEnemy(); break;
+            case "Wall": collisionWithWalls(); break;
+        }
+    }
+
+    private void collisionWithPlayer(){
+        GameObject.Find("UI").GetComponent<UI>().playerHit();
+
+        GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+
+        Destroy(this.gameObject);
+    }
+
+    private void collisionWithEnemy(){
+        if(type == enemyType.ROCKET){
+            GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+            Destroy(this.gameObject);
+        }
+        else
+            isGoingRight = !isGoingRight;
+    }
+
+    private void collisionWithWalls(){
+        if(type == enemyType.SHOOTER)
+            isGoingRight = !isGoingRight;
+        else {
+            GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+            Destroy(this.gameObject);
         }
     }
 }
