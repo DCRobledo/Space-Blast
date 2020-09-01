@@ -906,7 +906,15 @@ MonoBehaviour:
   - entity: {fileID: 3060620719790364401, guid: ac7ffbb83b4a6f240ac27825fd02e16c, type: 3}
     xLimits: f6ffffff05000000
     yLimits: fdffffff02000000
+    spawnChance: 2
+  - entity: {fileID: 2121541270170912680, guid: d487d0a097c961d478f974dbbfce35c0, type: 3}
+    xLimits: f6ffffff05000000
+    yLimits: fdffffff02000000
     spawnChance: 5
+  - entity: {fileID: 9181315664732688451, guid: 873ca965bfca8e74ca3e6c9880e24f80, type: 3}
+    xLimits: f6ffffff05000000
+    yLimits: fdffffff02000000
+    spawnChance: 10
   numEnemies: 0
   numPowerUps: 0
 --- !u!1 &941602983

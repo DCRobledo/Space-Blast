@@ -71,7 +71,9 @@ public class GameController : MonoBehaviour
         numEnemies--;
     }
 
-    public void powerUpDown(){
+    public IEnumerator powerUpDown(){
+        yield return new WaitForSeconds(30f);
+
         numPowerUps--;
     }
 }

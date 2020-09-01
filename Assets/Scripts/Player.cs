@@ -17,6 +17,10 @@ public class Player : MonoBehaviour
 
     private float shootTimer = 0f;
     private float shootTimeLimit = 6f;
+    private float speedBoostTimer = 31f;
+    private float speedBoostTimeLimit = 30f;
+    private float shootBoostTimer = 21f;
+    private float shootBoostTimeLimit = 20f;
 
     private bool canShot = true;
 
@@ -32,7 +36,13 @@ public class Player : MonoBehaviour
     {
         checkInput();
         checkCanShoot();
+        updatePowerUps();
+    }
+
+    private void updatePowerUps(){
         updateShield();
+        updateShootBoost();
+        updateSpeedBoost();
     }
 
     private void checkInput(){
@@ -94,7 +104,37 @@ public class Player : MonoBehaviour
             shieldUp = true;
     }
 
-    private void updateShield(){
+    private void updateShield() {
         GameObject.Find("shield").GetComponent<SpriteRenderer>().enabled = shieldUp;
+    }
+
+    public void shootBoost() {
+        this.shootBoostTimer = 0f;
+    }
+
+    private void updateShootBoost(){
+        if(shootBoostTimer <= shootBoostTimeLimit){
+            shootBoostTimer += .1f * Time.deltaTime;
+            shootTimeLimit = 6f;
+        }
+        else {
+            shootTimeLimit = 12f;
+        }
+    }
+
+    public void speedBoost() {
+        this.speedBoostTimer = 0f;
+    }
+    
+    private void updateSpeedBoost(){
+        if(speedBoostTimer <= speedBoostTimeLimit){
+            speedBoostTimer += .1f * Time.deltaTime;
+            xSpeed = 1.2f;
+            ySpeed = 1.2f;
+        }
+        else {
+            xSpeed = .8f;
+            ySpeed = .8f;
+        }
     }
 }
