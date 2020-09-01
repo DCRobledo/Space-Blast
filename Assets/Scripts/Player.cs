@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float xSpeed;
-    public float ySpeed;
-
+    public float idleSpeed;
+    public float boostedSpeed;
+    
     public GameObject playerProjectile;
 
     public bool isRecovering = false;
     public bool shieldUp = false;
 
-
     private Rigidbody2D rb;
+
+    private float playerSpeed;
 
     private float shootTimer = 0f;
     private float shootTimeLimit = 6f;
-    private float speedBoostTimer = 31f;
-    private float speedBoostTimeLimit = 30f;
-    private float shootBoostTimer = 21f;
-    private float shootBoostTimeLimit = 20f;
+
+    private float speedBoostTimer = 11f;
+    private float speedBoostTimeLimit = 10f;
+
+    public float shootBoostTimer = 6f;
+    private float shootBoostTimeLimit = 5f;
 
     private bool canShot = true;
 
@@ -66,10 +69,10 @@ public class Player : MonoBehaviour
 
     private void movePlayer(string direction, int forward){
         if(direction.ToUpper().Equals("X"))
-            rb.AddForce(new Vector2(forward*xSpeed, 0));
+            rb.AddForce(new Vector2(forward*playerSpeed, 0));
 
         if(direction.ToUpper().Equals("Y"))
-            rb.AddForce(new Vector2(0, forward*ySpeed));
+            rb.AddForce(new Vector2(0, forward*playerSpeed));
     }
 
     private void checkCanShoot(){
@@ -114,11 +117,11 @@ public class Player : MonoBehaviour
 
     private void updateShootBoost(){
         if(shootBoostTimer <= shootBoostTimeLimit){
-            shootBoostTimer += .1f * Time.deltaTime;
-            shootTimeLimit = 6f;
+            shootBoostTimer += 1f * Time.deltaTime;
+            shootTimeLimit = 1f;
         }
         else {
-            shootTimeLimit = 12f;
+            shootTimeLimit = 6f;
         }
     }
 
@@ -128,13 +131,10 @@ public class Player : MonoBehaviour
     
     private void updateSpeedBoost(){
         if(speedBoostTimer <= speedBoostTimeLimit){
-            speedBoostTimer += .1f * Time.deltaTime;
-            xSpeed = 1.2f;
-            ySpeed = 1.2f;
+            speedBoostTimer += 1f * Time.deltaTime;
+            playerSpeed = boostedSpeed;
         }
-        else {
-            xSpeed = .8f;
-            ySpeed = .8f;
-        }
+        else
+            playerSpeed = idleSpeed;
     }
 }

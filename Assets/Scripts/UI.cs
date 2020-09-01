@@ -6,8 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour
 {
-    public int playerScore = 0;
-    public int playerLives = 3;
+    
 
     public Text score;
     public Text time;
@@ -17,6 +16,8 @@ public class UI : MonoBehaviour
 
     private float timeCounter = 0f;
 
+    private int playerScore = 0;
+    private int playerLives = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -81,5 +82,9 @@ public class UI : MonoBehaviour
         GameObject.Find("Stats").GetComponent<Stats>().time = time.GetComponent<Text>().text.ToString();
 
         SceneManager.LoadScene("GameOver");
+    }
+
+    public void addScore(int score) {
+        playerScore += score;
     }
 }

@@ -246,8 +246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d7311c696f6dfb45bac11532e73fe37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSpeed: 0.8
-  ySpeed: 0.8
+  xSpeed: 0
+  ySpeed: 0
   playerProjectile: {fileID: 4293562325860745999, guid: 1141a2d459cc44b4db253fabf20edb88, type: 3}
   isRecovering: 0
   shieldUp: 0
+  shootBoostTimer: 6

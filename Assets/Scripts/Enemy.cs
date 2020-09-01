@@ -7,12 +7,12 @@ public class Enemy : MonoBehaviour
     public float xSpeed;
     public float ySpeed;
 
-    public float[] xLimits;
-
     public GameObject enemyProjectile;
 
     [Range (0, 2)]
     public float shootChance;
+
+    public bool canShot;
 
     public enum enemyType {
         SHOOTER,
@@ -22,12 +22,12 @@ public class Enemy : MonoBehaviour
 
     public enemyType type;
 
+    private float[] xLimits = {-2, 0};
     private float[] yPeaks;
 
     private bool isGoingUp = true;
     private bool reachPeak = false;
     private bool isGoingRight = true;
-    private bool canShot;
 
     private Rigidbody2D rb; 
 
@@ -38,8 +38,6 @@ public class Enemy : MonoBehaviour
         rb.freezeRotation = true;
 
         isGoingRight = this.transform.localPosition.x < 0;
-
-        canShot = type == enemyType.SHOOTER;
 
         float[] UFOPeaks = {this.transform.localPosition.y + .2f, this.transform.localPosition.y - .2f};
         yPeaks = UFOPeaks;
@@ -101,7 +99,7 @@ public class Enemy : MonoBehaviour
     }
 
     private void shoot() {
-        int rnd = Random.Range(0, 5000);
+        int rnd = Random.Range(0, 500);
 
         if(rnd < shootChance){
             GameObject projectile = GameObject.Instantiate(enemyProjectile);
@@ -146,5 +144,17 @@ public class Enemy : MonoBehaviour
             GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
             Destroy(this.gameObject);
         }
+    }
+
+    public void enemiesScore(){
+        int score = 0;
+
+        switch(type){
+            case enemyType.UFO: score = 50; break;
+            case enemyType.ROCKET: score = 20; break;
+            default: score = 75; break;
+        }
+
+        GameObject.Find("UI").GetComponent<UI>().addScore(score);
     }
 }

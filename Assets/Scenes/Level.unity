@@ -915,8 +915,6 @@ MonoBehaviour:
     xLimits: f6ffffff05000000
     yLimits: fdffffff02000000
     spawnChance: 10
-  numEnemies: 0
-  numPowerUps: 0
 --- !u!1 &941602983
 GameObject:
   m_ObjectHideFlags: 0
@@ -1465,8 +1463,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1c7929ee04871944ac84e3abc092b97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerScore: 0
-  playerLives: 3
   score: {fileID: 1422908120}
   time: {fileID: 593504504}
   live0: {fileID: 1425937927}
@@ -1785,6 +1781,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 856586159}
     m_Modifications:
+    - target: {fileID: 753484211, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
+      propertyPath: idleSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 753484211, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
+      propertyPath: boostedSpeed
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4280329668390984670, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1795,7 +1799,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4381598685564174742, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.41
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 4381598685564174742, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
       propertyPath: m_LocalPosition.z

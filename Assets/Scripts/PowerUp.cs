@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-
     public enum powerUpType {
         SHIELD,
         SHOOTBOOST,
@@ -29,7 +28,7 @@ public class PowerUp : MonoBehaviour
     {
         if(collider.gameObject.tag.Equals("Player")){
             
-            StartCoroutine(GameObject.Find("GameController").GetComponent<GameController>().powerUpDown());
+            GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
 
             switch(type){
                 case powerUpType.SHIELD: GameObject.Find("Player").GetComponent<Player>().shield(); break;
