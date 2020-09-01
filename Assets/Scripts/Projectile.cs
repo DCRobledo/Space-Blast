@@ -42,7 +42,7 @@ public class Projectile : MonoBehaviour
 
     private void checkCollisionOnEnemy(Collision2D collider){
         if(collider.gameObject.tag.Equals("Enemy")){
-            GameObject.Find("UI").GetComponent<UI>().playerScore += 250;
+            collider.transform.GetComponent<Enemy>().enemiesScore();
 
             GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
 

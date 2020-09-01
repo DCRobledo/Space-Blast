@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float xSpeed;
-    public float ySpeed;
-
+    public float idleSpeed;
+    public float boostedSpeed;
+    
     public GameObject playerProjectile;
 
     public bool isRecovering = false;
     public bool shieldUp = false;
 
-
     private Rigidbody2D rb;
 
+    private float playerSpeed;
+
     private float shootTimer = 0f;
-    private float shootTimeLimit = 3f;
+    private float shootTimeLimit = 6f;
+
+    private float speedBoostTimer = 11f;
+    private float speedBoostTimeLimit = 10f;
+
+    public float shootBoostTimer = 6f;
+    private float shootBoostTimeLimit = 5f;
 
     private bool canShot = true;
 
@@ -32,7 +39,13 @@ public class Player : MonoBehaviour
     {
         checkInput();
         checkCanShoot();
+        updatePowerUps();
+    }
+
+    private void updatePowerUps(){
         updateShield();
+        updateShootBoost();
+        updateSpeedBoost();
     }
 
     private void checkInput(){
@@ -56,10 +69,10 @@ public class Player : MonoBehaviour
 
     private void movePlayer(string direction, int forward){
         if(direction.ToUpper().Equals("X"))
-            rb.AddForce(new Vector2(forward*xSpeed, 0));
+            rb.AddForce(new Vector2(forward*playerSpeed, 0));
 
         if(direction.ToUpper().Equals("Y"))
-            rb.AddForce(new Vector2(0, forward*ySpeed));
+            rb.AddForce(new Vector2(0, forward*playerSpeed));
     }
 
     private void checkCanShoot(){
@@ -94,7 +107,34 @@ public class Player : MonoBehaviour
             shieldUp = true;
     }
 
-    private void updateShield(){
+    private void updateShield() {
         GameObject.Find("shield").GetComponent<SpriteRenderer>().enabled = shieldUp;
+    }
+
+    public void shootBoost() {
+        this.shootBoostTimer = 0f;
+    }
+
+    private void updateShootBoost(){
+        if(shootBoostTimer <= shootBoostTimeLimit){
+            shootBoostTimer += 1f * Time.deltaTime;
+            shootTimeLimit = 1f;
+        }
+        else {
+            shootTimeLimit = 6f;
+        }
+    }
+
+    public void speedBoost() {
+        this.speedBoostTimer = 0f;
+    }
+    
+    private void updateSpeedBoost(){
+        if(speedBoostTimer <= speedBoostTimeLimit){
+            speedBoostTimer += 1f * Time.deltaTime;
+            playerSpeed = boostedSpeed;
+        }
+        else
+            playerSpeed = idleSpeed;
     }
 }

@@ -7,15 +7,17 @@ public class GameController : MonoBehaviour
     public List<Entity> enemies = new List<Entity>();
     public List<Entity> powerUps = new List<Entity>();
 
-    public int numEnemies = 0;
-    public int numPowerUps = 0;
+    private int numEnemies = 0;
+    private int numPowerUps = 0;
 
     private bool canSpawnEnemy = true;
     private bool canSpawnPowerUp = true;
 
+    private GameObject player;
+
     void Start()
     {
-        
+        player = GameObject.Find("Player");
     }
 
     void Update()
@@ -60,10 +62,21 @@ public class GameController : MonoBehaviour
             }
             
             //Position the entity
-            float rndX = Random.Range(list[entitySelector].xLimits[0], list[entitySelector].xLimits[1]);
-            float rndY = Random.Range(list[entitySelector].yLimits[0], list[entitySelector].yLimits[1]);
+            int rndX = Random.Range(list[entitySelector].xLimits[0], list[entitySelector].xLimits[1]);
+            int rndY = Random.Range(list[entitySelector].yLimits[0], list[entitySelector].yLimits[1]);
 
-            newEntity.transform.localPosition = new Vector3(rndX, rndY, 0);
+            //Prevent instant hit on the player
+            float playerX = player.transform.localPosition.x;
+            float playerY = player.transform.localPosition.y;
+
+            bool hitOnX = (rndX <= playerX + 1.6f) && (rndX >= playerX - 1.6f);
+            bool hitOnY = (rndY <= playerY + 1f) && (rndY >= playerY - 1f);
+
+            //Tweak spawn position if needed
+            if(hitOnX && hitOnY)
+                newEntity.transform.localPosition = new Vector3(rndX+1.6f, rndY+1f, 0);
+            else
+                newEntity.transform.localPosition = new Vector3(rndX, rndY, 0);
         }
     }
 
@@ -72,6 +85,12 @@ public class GameController : MonoBehaviour
     }
 
     public void powerUpDown(){
+        StartCoroutine(processAfterPowerUpDown());
+    }
+
+    private IEnumerator processAfterPowerUpDown() {
+        yield return new WaitForSeconds(10f);
+
         numPowerUps--;
     }
 }
