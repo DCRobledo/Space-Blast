@@ -66,6 +66,8 @@ public class UI : MonoBehaviour
 
     public void playerHit(){
         if(!GameObject.Find("Player").GetComponent<Player>().isRecovering) {
+            GameObject.Find("Main Camera").GetComponent<Animator>().SetTrigger("cameraShake");
+
             StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
             if(!GameObject.Find("Player").GetComponent<Player>().shieldUp)
                 playerLives--;

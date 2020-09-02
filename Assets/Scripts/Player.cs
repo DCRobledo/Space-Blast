@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     
     public GameObject playerProjectile;
 
+    public Animator animator;
+
     public bool isRecovering = false;
     public bool shieldUp = false;
 
@@ -32,6 +34,8 @@ public class Player : MonoBehaviour
     {
         rb = this.GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
+
+        animator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -40,12 +44,19 @@ public class Player : MonoBehaviour
         checkInput();
         checkCanShoot();
         updatePowerUps();
+        updateAnimations();
     }
 
     private void updatePowerUps(){
         updateShield();
         updateShootBoost();
         updateSpeedBoost();
+    }
+
+    private void updateAnimations() {
+        animator.SetBool("isRecovery", this.isRecovering);
+        animator.SetBool("shootBoost", (shootBoostTimer <= shootBoostTimeLimit));
+        animator.SetBool("speedBoost", (speedBoostTimer <= speedBoostTimeLimit));
     }
 
     private void checkInput(){

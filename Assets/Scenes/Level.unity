@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 129158608}
   - component: {fileID: 129158609}
+  - component: {fileID: 129158610}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -205,6 +206,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &129158610
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129158607}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b19544d5bed609d449368c5d0d87d997, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &184641977
 GameObject:
   m_ObjectHideFlags: 0
@@ -1215,6 +1235,7 @@ GameObject:
   - component: {fileID: 1480204543}
   - component: {fileID: 1480204542}
   - component: {fileID: 1480204541}
+  - component: {fileID: 1480204544}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1287,6 +1308,25 @@ Transform:
   m_Father: {fileID: 1714624811}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1480204544
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480204540}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 01c78b11b36886d479bdc75bd1107e88, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1547576505
 GameObject:
   m_ObjectHideFlags: 0
@@ -1781,13 +1821,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 856586159}
     m_Modifications:
-    - target: {fileID: 753484211, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
-      propertyPath: idleSpeed
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 753484211, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
-      propertyPath: boostedSpeed
-      value: 7
+    - target: {fileID: 1748683136, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4280329668390984670, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
       propertyPath: m_Name

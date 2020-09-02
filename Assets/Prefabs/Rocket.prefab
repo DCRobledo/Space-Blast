@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8385255626229177986}
   - component: {fileID: 8385255626229177985}
   - component: {fileID: 8385255626229177988}
+  - component: {fileID: 2021873673}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Enemy
@@ -27,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 44450419204116469}
-  m_LocalRotation: {x: -0, y: -0, z: -1, w: 0.00000016391276}
+  m_LocalRotation: {x: 0, y: 0, z: -1, w: 0}
   m_LocalPosition: {x: -2.0196128, y: -0.72952664, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
@@ -164,9 +165,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSpeed: 0
   ySpeed: 2
-  xLimits:
-  - -2
-  - 0
   enemyProjectile: {fileID: 1449903371448130903, guid: b6ac967dbf1773d408def539bd2867ba, type: 3}
   shootChance: 0.958
+  canShot: 0
   type: 2
+--- !u!95 &2021873673
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44450419204116469}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f5b940c7afa06df4e8260e8032cebcd5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
