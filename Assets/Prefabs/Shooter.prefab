@@ -175,7 +175,7 @@ MonoBehaviour:
   ySpeed: 0
   enemyProjectile: {fileID: 1449903371448130903, guid: b6ac967dbf1773d408def539bd2867ba, type: 3}
   effect: {fileID: 3603945049287998498, guid: ba49310736282e34c9857896ae4b8a36, type: 3}
-  shootChance: 0.958
+  shootChance: 1.194
   canShot: 1
   type: 0
 --- !u!95 &494702611

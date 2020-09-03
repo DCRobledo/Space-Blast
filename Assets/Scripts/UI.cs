@@ -14,6 +14,9 @@ public class UI : MonoBehaviour
     public Image live1;
     public Image live2;
 
+    public AudioClip shieldDownSoundEffect;
+    public AudioClip playerHitSoundEffect;
+
     private float timeCounter = 0f;
 
     private int playerScore = 0;
@@ -69,15 +72,19 @@ public class UI : MonoBehaviour
             GameObject.Find("Main Camera").GetComponent<Animator>().SetTrigger("cameraShake");
 
             StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
-            if(!GameObject.Find("Player").GetComponent<Player>().shieldUp)
+            if(!GameObject.Find("Player").GetComponent<Player>().shieldUp) {
                 playerLives--;
+                GameObject.Find("Player").GetComponent<Player>().playSoundEffect(playerHitSoundEffect);
+            }
             else {
                 GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
                 GameObject.Find("Player").GetComponent<Player>().shieldExplosionEffect();
+                GameObject.Find("Player").GetComponent<Player>().playSoundEffect(shieldDownSoundEffect);
             }
 
             if(playerLives == 0) {
                 GameObject.Find("Player").GetComponent<Player>().playerExplosionEffect();
+                GameObject.Find("GameController").GetComponent<GameController>().playPlayerExplosionSoundEffect();
                 //gameOver();
             }
         }

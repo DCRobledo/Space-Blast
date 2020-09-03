@@ -132,6 +132,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   effect: {fileID: 3053374985180377192, guid: 0bf351cba531c06488813220c3e133ca, type: 3}
+  soundEffect: {fileID: 8300000, guid: e05c5b5dd01710d47b5f7d0ef7a135fa, type: 3}
 --- !u!95 &240205667
 Animator:
   serializedVersion: 3

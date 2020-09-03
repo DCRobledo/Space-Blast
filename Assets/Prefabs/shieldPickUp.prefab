@@ -130,6 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   effect: {fileID: 760728444850633013, guid: e350966535d76eb458545c8a19d1b561, type: 3}
+  soundEffect: {fileID: 8300000, guid: 709f99813aa31384284e21a1d8ef98ff, type: 3}
 --- !u!95 &1491317167
 Animator:
   serializedVersion: 3

@@ -162,4 +162,8 @@ public class Player : MonoBehaviour
         newObj.name = "Explosion Effect";
         newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
+
+    public void playSoundEffect(AudioClip clip) {
+        this.GetComponent<AudioSource>().PlayOneShot(clip);
+    }
 }

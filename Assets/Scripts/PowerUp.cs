@@ -14,6 +14,8 @@ public class PowerUp : MonoBehaviour
 
     public GameObject effect;
 
+    public AudioClip soundEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +31,8 @@ public class PowerUp : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.tag.Equals("Player")){
+
+            GameObject.Find("Player").GetComponent<Player>().playSoundEffect(soundEffect);
             
             GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
 

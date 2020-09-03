@@ -7,6 +7,9 @@ public class GameController : MonoBehaviour
     public List<Entity> enemies = new List<Entity>();
     public List<Entity> powerUps = new List<Entity>();
 
+    public AudioClip playerExplosionSoundEffect;
+    public AudioClip enemyExplosionSoundEffect;
+
     private int numEnemies = 0;
     private int numPowerUps = 0;
 
@@ -82,6 +85,7 @@ public class GameController : MonoBehaviour
 
     public void enemyDown(){
         numEnemies--;
+        playEnemyExplosionSoundEffect();
     }
 
     public void powerUpDown(){
@@ -92,6 +96,14 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(10f);
 
         numPowerUps--;
+    }
+
+    private void playEnemyExplosionSoundEffect() {
+        this.GetComponent<AudioSource>().PlayOneShot(enemyExplosionSoundEffect);
+    }
+
+    public void playPlayerExplosionSoundEffect() {
+        this.GetComponent<AudioSource>().PlayOneShot(playerExplosionSoundEffect);
     }
 }
 
