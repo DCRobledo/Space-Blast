@@ -12,6 +12,8 @@ public class PowerUp : MonoBehaviour
 
     public powerUpType type;
 
+    public GameObject effect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +32,8 @@ public class PowerUp : MonoBehaviour
             
             GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
 
+            explosionEffect();
+
             switch(type){
                 case powerUpType.SHIELD: GameObject.Find("Player").GetComponent<Player>().shield(); break;
                 case powerUpType.SHOOTBOOST: GameObject.Find("Player").GetComponent<Player>().shootBoost(); break;
@@ -38,6 +42,12 @@ public class PowerUp : MonoBehaviour
             
             Destroy(this.gameObject);
         }
+    }
+
+    private void explosionEffect(){
+        GameObject newObj = Instantiate(effect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
 
 }

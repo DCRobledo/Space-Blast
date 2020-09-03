@@ -166,6 +166,7 @@ MonoBehaviour:
   xSpeed: 0
   ySpeed: 2
   enemyProjectile: {fileID: 1449903371448130903, guid: b6ac967dbf1773d408def539bd2867ba, type: 3}
+  effect: {fileID: 2061800429876791010, guid: 9b28f59dcaaf9f543b5b29484b09b4b9, type: 3}
   shootChance: 0.958
   canShot: 0
   type: 2

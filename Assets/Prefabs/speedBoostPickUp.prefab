@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  effect: {fileID: 8137395019519231511, guid: a53804984946d374080d5e5c6e1525cf, type: 3}
 --- !u!95 &1269818895
 Animator:
   serializedVersion: 3

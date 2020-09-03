@@ -129,6 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  effect: {fileID: 760728444850633013, guid: e350966535d76eb458545c8a19d1b561, type: 3}
 --- !u!95 &1491317167
 Animator:
   serializedVersion: 3

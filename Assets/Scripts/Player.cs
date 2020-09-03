@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     public float boostedSpeed;
     
     public GameObject playerProjectile;
+    public GameObject shieldEffect;
+    public GameObject playerEffect;
 
     public Animator animator;
 
@@ -147,5 +149,17 @@ public class Player : MonoBehaviour
         }
         else
             playerSpeed = idleSpeed;
+    }
+
+    public void shieldExplosionEffect(){
+        GameObject newObj = Instantiate(shieldEffect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
+    }
+
+    public void playerExplosionEffect(){
+        GameObject newObj = Instantiate(playerEffect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
 }

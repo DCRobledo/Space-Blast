@@ -149,3 +149,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpeed: 8
   isPlayerProjectile: 0
+  effect: {fileID: 2419736631522340538, guid: de0536001d2de1d458ecd6751e58f558, type: 3}

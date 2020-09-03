@@ -1821,6 +1821,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 856586159}
     m_Modifications:
+    - target: {fileID: 753484211, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
+      propertyPath: shieldEffect
+      value: 
+      objectReference: {fileID: 2290613275991522737, guid: ae99318e271041048bc04fa88077005b, type: 3}
+    - target: {fileID: 753484211, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
+      propertyPath: playerEffect
+      value: 
+      objectReference: {fileID: 3609496625429707291, guid: 5b44eaa4a9343014aa44c0171b2c540f, type: 3}
     - target: {fileID: 1748683136, guid: e3f7f41de142c65498db66e70008cc6a, type: 3}
       propertyPath: m_Enabled
       value: 0

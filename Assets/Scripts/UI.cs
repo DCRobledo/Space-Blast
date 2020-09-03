@@ -71,11 +71,15 @@ public class UI : MonoBehaviour
             StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
             if(!GameObject.Find("Player").GetComponent<Player>().shieldUp)
                 playerLives--;
-            else
+            else {
                 GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
+                GameObject.Find("Player").GetComponent<Player>().shieldExplosionEffect();
+            }
 
-            if(playerLives == 0)
-                gameOver();
+            if(playerLives == 0) {
+                GameObject.Find("Player").GetComponent<Player>().playerExplosionEffect();
+                //gameOver();
+            }
         }
     }
 
