@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
     public bool isRecovering = false;
     public bool shieldUp = false;
+    public bool gameOn = false;
 
     private Rigidbody2D rb;
 
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
     private float shootBoostTimeLimit = 5f;
 
     private bool canShot = true;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +45,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        checkInput();
+        if(gameOn)
+            checkInput();
+
         checkCanShoot();
         updatePowerUps();
         updateAnimations();

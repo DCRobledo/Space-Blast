@@ -10,11 +10,15 @@ public class GameController : MonoBehaviour
     public AudioClip playerExplosionSoundEffect;
     public AudioClip enemyExplosionSoundEffect;
 
+    public bool gameOn = false;
+
     private int numEnemies = 0;
     private int numPowerUps = 0;
 
     private bool canSpawnEnemy = true;
     private bool canSpawnPowerUp = true;
+
+    
 
     private GameObject player;
 
@@ -26,7 +30,9 @@ public class GameController : MonoBehaviour
     void Update()
     {
         checkSpawns();
-        spawnEntities();
+
+        if(gameOn)
+            spawnEntities();
     }
 
     private void checkSpawns() {

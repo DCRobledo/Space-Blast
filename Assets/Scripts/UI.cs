@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class UI : MonoBehaviour
-{
-    
+public class UI : MonoBehaviour {
 
     public Text score;
     public Text time;
+    public Text ready;
+    public Text go;
+    public Text gameOverText;
+
     public Image live0;
     public Image live1;
     public Image live2;
@@ -22,19 +24,62 @@ public class UI : MonoBehaviour
     private int playerScore = 0;
     private int playerLives = 3;
 
+    private bool gameOn = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
+        startGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        updateTime();
+        if(gameOn)
+            updateTime();
+
         updateLives();
         updateScore();
     }
+
+    private void startGame() {
+        ready.GetComponent<Text>().enabled = false;
+        go.GetComponent<Text>().enabled = false;
+
+        StartCoroutine(waitForFadeIn());
+    }
+
+    private IEnumerator waitForFadeIn() {
+        yield return new WaitForSeconds(2f);
+
+        GameObject.Find("Transition").GetComponent<Image>().enabled = false;
+
+        StartCoroutine(readyRoutine(2f));
+    }
+
+    private IEnumerator readyRoutine(float delay){
+        ready.GetComponent<Text>().enabled = true;
+
+        yield return new WaitForSeconds(delay);
+
+        ready.GetComponent<Text>().enabled = false;
+
+        StartCoroutine(goRoutine(1.5f));
+    }
+
+    private IEnumerator goRoutine(float delay){
+        go.GetComponent<Text>().enabled = true;
+
+        this.gameOn = true;
+        GameObject.Find("Player").GetComponent<Player>().gameOn = true;
+        GameObject.Find("GameController").GetComponent<GameController>().gameOn = true;
+
+        yield return new WaitForSeconds(delay);
+
+        go.GetComponent<Text>().enabled = false;
+    } 
 
     private void updateTime() {
         timeCounter += Time.deltaTime;
@@ -85,17 +130,64 @@ public class UI : MonoBehaviour
             if(playerLives == 0) {
                 GameObject.Find("Player").GetComponent<Player>().playerExplosionEffect();
                 GameObject.Find("GameController").GetComponent<GameController>().playPlayerExplosionSoundEffect();
-                //gameOver();
+                GameObject.Find("Player").GetComponent<Animator>().enabled = false;
+                GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
+                gameOver();
             }
         }
     }
 
-    private void gameOver(){
+    private void gameOver() {
+        //Pause Music
+        GameObject.Find("Level").GetComponent<AudioSource>().Stop();
+
+        //Destroy Entities
+        destroyEntities();
+
+        //Pass Stats
+        passStats();
+
+        StartCoroutine(gameOverTextRoutine(1.5f));
+    }
+
+    private IEnumerator gameOverTextRoutine(float delay){
+        yield return new WaitForSeconds(1f);
+
+        gameOverText.GetComponent<Text>().enabled = true;
+
+        yield return new WaitForSeconds(delay);
+
+        gameOverText.GetComponent<Text>().enabled = false;
+
+        StartCoroutine(processAfterGameOver(2f));
+    }
+
+    private void destroyEntities(){
+        destroyEntitiesWithTag("Enemy");
+        destroyEntitiesWithTag("PowerUp");
+        destroyEntitiesWithTag("PlayerProjectile");
+        destroyEntitiesWithTag("EnemyProjectile");
+    }
+
+    private void destroyEntitiesWithTag(string tag){
+        GameObject[] entities = GameObject.FindGameObjectsWithTag(tag);
+        foreach(GameObject go in entities)
+            Destroy(go);
+    }
+
+    private void passStats() {
         GameObject.Find("Stats").GetComponent<Stats>().score = playerScore;
         GameObject.Find("Stats").GetComponent<Stats>().time = time.GetComponent<Text>().text.ToString();
+    }
+
+    private IEnumerator processAfterGameOver (float delay){
+        GameObject.Find("Transition").GetComponent<Animator>().SetTrigger("fadeOut");
+
+        yield return new WaitForSeconds(delay);
 
         SceneManager.LoadScene("GameOver");
     }
+
 
     public void addScore(int score) {
         playerScore += score;
