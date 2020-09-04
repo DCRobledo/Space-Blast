@@ -4,34 +4,82 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class UI : MonoBehaviour
-{
-    
+public class UI : MonoBehaviour {
 
     public Text score;
     public Text time;
+    public Text ready;
+    public Text go;
+    public Text gameOverText;
+
     public Image live0;
     public Image live1;
     public Image live2;
+
+    public AudioClip shieldDownSoundEffect;
+    public AudioClip playerHitSoundEffect;
 
     private float timeCounter = 0f;
 
     private int playerScore = 0;
     private int playerLives = 3;
 
+    private bool gameOn = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
+        startGame();
     }
 
     // Update is called once per frame
     void Update()
     {
-        updateTime();
+        if(gameOn)
+            updateTime();
+
         updateLives();
         updateScore();
     }
+
+    private void startGame() {
+        ready.GetComponent<Text>().enabled = false;
+        go.GetComponent<Text>().enabled = false;
+
+        StartCoroutine(waitForFadeIn());
+    }
+
+    private IEnumerator waitForFadeIn() {
+        yield return new WaitForSeconds(2f);
+
+        GameObject.Find("Transition").GetComponent<Image>().enabled = false;
+
+        StartCoroutine(readyRoutine(2f));
+    }
+
+    private IEnumerator readyRoutine(float delay){
+        ready.GetComponent<Text>().enabled = true;
+
+        yield return new WaitForSeconds(delay);
+
+        ready.GetComponent<Text>().enabled = false;
+
+        StartCoroutine(goRoutine(1.5f));
+    }
+
+    private IEnumerator goRoutine(float delay){
+        go.GetComponent<Text>().enabled = true;
+
+        this.gameOn = true;
+        GameObject.Find("Player").GetComponent<Player>().gameOn = true;
+        GameObject.Find("GameController").GetComponent<GameController>().gameOn = true;
+
+        yield return new WaitForSeconds(delay);
+
+        go.GetComponent<Text>().enabled = false;
+    } 
 
     private void updateTime() {
         timeCounter += Time.deltaTime;
@@ -66,23 +114,80 @@ public class UI : MonoBehaviour
 
     public void playerHit(){
         if(!GameObject.Find("Player").GetComponent<Player>().isRecovering) {
-            StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
-            if(!GameObject.Find("Player").GetComponent<Player>().shieldUp)
-                playerLives--;
-            else
-                GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
+            GameObject.Find("Main Camera").GetComponent<Animator>().SetTrigger("cameraShake");
 
-            if(playerLives == 0)
+            StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
+            if(!GameObject.Find("Player").GetComponent<Player>().shieldUp) {
+                playerLives--;
+                GameObject.Find("Player").GetComponent<Player>().playSoundEffect(playerHitSoundEffect);
+            }
+            else {
+                GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
+                GameObject.Find("Player").GetComponent<Player>().shieldExplosionEffect();
+                GameObject.Find("Player").GetComponent<Player>().playSoundEffect(shieldDownSoundEffect);
+            }
+
+            if(playerLives == 0) {
+                GameObject.Find("Player").GetComponent<Player>().playerExplosionEffect();
+                GameObject.Find("GameController").GetComponent<GameController>().playPlayerExplosionSoundEffect();
+                GameObject.Find("Player").GetComponent<Animator>().enabled = false;
+                GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
                 gameOver();
+            }
         }
     }
 
-    private void gameOver(){
+    private void gameOver() {
+        //Pause Music
+        GameObject.Find("Level").GetComponent<AudioSource>().Stop();
+
+        //Destroy Entities
+        destroyEntities();
+
+        //Pass Stats
+        passStats();
+
+        StartCoroutine(gameOverTextRoutine(1.5f));
+    }
+
+    private IEnumerator gameOverTextRoutine(float delay){
+        yield return new WaitForSeconds(1f);
+
+        gameOverText.GetComponent<Text>().enabled = true;
+
+        yield return new WaitForSeconds(delay);
+
+        gameOverText.GetComponent<Text>().enabled = false;
+
+        StartCoroutine(processAfterGameOver(2f));
+    }
+
+    private void destroyEntities(){
+        destroyEntitiesWithTag("Enemy");
+        destroyEntitiesWithTag("PowerUp");
+        destroyEntitiesWithTag("PlayerProjectile");
+        destroyEntitiesWithTag("EnemyProjectile");
+    }
+
+    private void destroyEntitiesWithTag(string tag){
+        GameObject[] entities = GameObject.FindGameObjectsWithTag(tag);
+        foreach(GameObject go in entities)
+            Destroy(go);
+    }
+
+    private void passStats() {
         GameObject.Find("Stats").GetComponent<Stats>().score = playerScore;
         GameObject.Find("Stats").GetComponent<Stats>().time = time.GetComponent<Text>().text.ToString();
+    }
+
+    private IEnumerator processAfterGameOver (float delay){
+        GameObject.Find("Transition").GetComponent<Animator>().SetTrigger("fadeOut");
+
+        yield return new WaitForSeconds(delay);
 
         SceneManager.LoadScene("GameOver");
     }
+
 
     public void addScore(int score) {
         playerScore += score;

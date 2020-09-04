@@ -8,9 +8,14 @@ public class Player : MonoBehaviour
     public float boostedSpeed;
     
     public GameObject playerProjectile;
+    public GameObject shieldEffect;
+    public GameObject playerEffect;
+
+    public Animator animator;
 
     public bool isRecovering = false;
     public bool shieldUp = false;
+    public bool gameOn = false;
 
     private Rigidbody2D rb;
 
@@ -26,26 +31,38 @@ public class Player : MonoBehaviour
     private float shootBoostTimeLimit = 5f;
 
     private bool canShot = true;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
         rb.freezeRotation = true;
+
+        animator = this.GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        checkInput();
+        if(gameOn)
+            checkInput();
+
         checkCanShoot();
         updatePowerUps();
+        updateAnimations();
     }
 
     private void updatePowerUps(){
         updateShield();
         updateShootBoost();
         updateSpeedBoost();
+    }
+
+    private void updateAnimations() {
+        animator.SetBool("isRecovery", this.isRecovering);
+        animator.SetBool("shootBoost", (shootBoostTimer <= shootBoostTimeLimit));
+        animator.SetBool("speedBoost", (speedBoostTimer <= speedBoostTimeLimit));
     }
 
     private void checkInput(){
@@ -136,5 +153,21 @@ public class Player : MonoBehaviour
         }
         else
             playerSpeed = idleSpeed;
+    }
+
+    public void shieldExplosionEffect(){
+        GameObject newObj = Instantiate(shieldEffect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
+    }
+
+    public void playerExplosionEffect(){
+        GameObject newObj = Instantiate(playerEffect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
+    }
+
+    public void playSoundEffect(AudioClip clip) {
+        this.GetComponent<AudioSource>().PlayOneShot(clip);
     }
 }

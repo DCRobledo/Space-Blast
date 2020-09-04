@@ -12,6 +12,10 @@ public class PowerUp : MonoBehaviour
 
     public powerUpType type;
 
+    public GameObject effect;
+
+    public AudioClip soundEffect;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,8 +31,12 @@ public class PowerUp : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.tag.Equals("Player")){
+
+            GameObject.Find("Player").GetComponent<Player>().playSoundEffect(soundEffect);
             
             GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
+
+            explosionEffect();
 
             switch(type){
                 case powerUpType.SHIELD: GameObject.Find("Player").GetComponent<Player>().shield(); break;
@@ -38,6 +46,12 @@ public class PowerUp : MonoBehaviour
             
             Destroy(this.gameObject);
         }
+    }
+
+    private void explosionEffect(){
+        GameObject newObj = Instantiate(effect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
 
 }

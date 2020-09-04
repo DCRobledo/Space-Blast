@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 3060620719790364405}
   - component: {fileID: 3060620719790364406}
   - component: {fileID: 3060620719790364407}
+  - component: {fileID: 1491317167}
   m_Layer: 0
   m_Name: shieldPickUp
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,3 +128,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c53ce1f6e0312d44ea040e6a35e9f8f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
+  effect: {fileID: 760728444850633013, guid: e350966535d76eb458545c8a19d1b561, type: 3}
+  soundEffect: {fileID: 8300000, guid: 709f99813aa31384284e21a1d8ef98ff, type: 3}
+--- !u!95 &1491317167
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3060620719790364401}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 55ca9b9fb1f8e944d997981719b6e0af, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

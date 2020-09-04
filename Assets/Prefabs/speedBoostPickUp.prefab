@@ -12,9 +12,10 @@ GameObject:
   - component: {fileID: 7829675362945728668}
   - component: {fileID: 7537321452092522706}
   - component: {fileID: 3867151330965913964}
+  - component: {fileID: 1269818895}
   m_Layer: 0
   m_Name: speedBoostPickUp
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,3 +130,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  effect: {fileID: 8137395019519231511, guid: a53804984946d374080d5e5c6e1525cf, type: 3}
+  soundEffect: {fileID: 8300000, guid: 4de8a0c9ec4c0c94fab39378e2dfaca8, type: 3}
+--- !u!95 &1269818895
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9181315664732688451}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9b23ad71ff0f9884c8cb9b03798e273f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

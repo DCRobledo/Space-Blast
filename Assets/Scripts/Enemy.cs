@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public float ySpeed;
 
     public GameObject enemyProjectile;
+    public GameObject effect;
 
     [Range (0, 2)]
     public float shootChance;
@@ -125,12 +126,15 @@ public class Enemy : MonoBehaviour
 
         GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
 
+        this.explosionEffect();
+        
         Destroy(this.gameObject);
     }
 
     private void collisionWithEnemy(){
         if(type == enemyType.ROCKET){
             GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+            this.explosionEffect();
             Destroy(this.gameObject);
         }
         else
@@ -142,6 +146,7 @@ public class Enemy : MonoBehaviour
             isGoingRight = !isGoingRight;
         else {
             GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+            this.explosionEffect();
             Destroy(this.gameObject);
         }
     }
@@ -156,5 +161,11 @@ public class Enemy : MonoBehaviour
         }
 
         GameObject.Find("UI").GetComponent<UI>().addScore(score);
+    }
+
+    public void explosionEffect(){
+        GameObject newObj = Instantiate(effect, transform.position, Quaternion.identity);
+        newObj.name = "Explosion Effect";
+        newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
 }

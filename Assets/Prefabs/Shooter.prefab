@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1570002978}
   - component: {fileID: 1570002977}
   - component: {fileID: 1570002980}
+  - component: {fileID: 494702611}
   m_Layer: 0
   m_Name: Shooter
   m_TagString: Enemy
@@ -172,10 +173,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   xSpeed: 2
   ySpeed: 0
-  xLimits:
-  - -2
-  - 0
   enemyProjectile: {fileID: 1449903371448130903, guid: b6ac967dbf1773d408def539bd2867ba, type: 3}
-  shootChance: 0.958
+  effect: {fileID: 3603945049287998498, guid: ba49310736282e34c9857896ae4b8a36, type: 3}
+  shootChance: 1.194
   canShot: 1
   type: 0
+--- !u!95 &494702611
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8413712544537987413}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 56c1aaedf9f71c94c947b6480351e2c0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

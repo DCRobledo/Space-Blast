@@ -8,10 +8,14 @@ public class Projectile : MonoBehaviour
 
     public bool isPlayerProjectile = true;
 
+    public GameObject effect;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject newEffect = Instantiate(effect, transform.position, Quaternion.identity);
+        newEffect.name = "Projectile Effect";
+        newEffect.transform.SetParent(GameObject.Find("Effects").transform);
     }
 
     // Update is called once per frame
@@ -43,6 +47,7 @@ public class Projectile : MonoBehaviour
     private void checkCollisionOnEnemy(Collision2D collider){
         if(collider.gameObject.tag.Equals("Enemy")){
             collider.transform.GetComponent<Enemy>().enemiesScore();
+            collider.transform.GetComponent<Enemy>().explosionEffect();
 
             GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
 

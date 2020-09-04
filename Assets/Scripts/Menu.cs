@@ -9,7 +9,14 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
+        StartCoroutine(waitForFadeIn());
+    }
+
+    private IEnumerator waitForFadeIn() {
+        yield return new WaitForSeconds(2f);
+        GameObject.Find("Transition").GetComponent<Image>().enabled = false;
     }
 
     // Update is called once per frame
@@ -19,10 +26,30 @@ public class Menu : MonoBehaviour
     }
 
     public void playButtonPressed() {
+        StartCoroutine(processAfterPlayButtonPressed(1.5f));
+    }
+
+    private IEnumerator processAfterPlayButtonPressed (float delay){
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
+        GameObject.Find("Transition").GetComponent<Animator>().SetTrigger("fadeOut");
+
+        yield return new WaitForSeconds(delay);
+
         SceneManager.LoadScene("Level");
     }
 
     public void exitButtonPressed() {
+        StartCoroutine(processAfterExitButtonPressed(1.5f));
+    }
+
+    private IEnumerator processAfterExitButtonPressed (float delay){
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
+        GameObject.Find("Transition").GetComponent<Animator>().SetTrigger("fadeOut");
+
+        yield return new WaitForSeconds(delay);
+
         Application.Quit();
     }
 }
