@@ -2,19 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
-{
-    public float xSpeed;
-    public float ySpeed;
-
-    public GameObject enemyProjectile;
-    public GameObject effect;
-
-    [Range (0, 2)]
-    public float shootChance;
-
-    public bool canShot;
-
+public class Enemy : MonoBehaviour {
     public enum enemyType {
         SHOOTER,
         UFO,
@@ -22,6 +10,17 @@ public class Enemy : MonoBehaviour
     }
 
     public enemyType type;
+
+    [Range (0, 2)]
+    public float shootChance;
+
+    public float xSpeed;
+    public float ySpeed;
+
+    public GameObject enemyProjectile;
+    public GameObject effect;
+
+    public bool canShot;
 
     private float[] xLimits = {-2, 0};
     private float[] yPeaks;
@@ -32,22 +31,32 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody2D rb; 
 
-    // Start is called before the first frame update
+
     void Start()
     {
-        rb = this.GetComponent<Rigidbody2D>();
-        rb.freezeRotation = true;
+        setRigidBody2D();
 
+        setInitialStats();
+    }
+
+    private void setInitialStats()
+    {
         isGoingRight = this.transform.localPosition.x < 0;
 
-        float[] UFOPeaks = {this.transform.localPosition.y + .2f, this.transform.localPosition.y - .2f};
+        float[] UFOPeaks = { this.transform.localPosition.y + .2f, this.transform.localPosition.y - .2f };
         yPeaks = UFOPeaks;
     }
 
-    // Update is called once per frame
+    private void setRigidBody2D()
+    {
+        rb = this.GetComponent<Rigidbody2D>();
+        rb.freezeRotation = true;
+    }
+
     void Update()
     {
         moveEnemy();
+
         if(canShot)
             shoot();
     }
@@ -121,22 +130,16 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void collisionWithPlayer(){
+    private void collisionWithPlayer()
+    {
         GameObject.Find("UI").GetComponent<UI>().playerHit();
 
-        GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
-
-        this.explosionEffect();
-        
-        Destroy(this.gameObject);
+        enemyDeath();
     }
 
     private void collisionWithEnemy(){
-        if(type == enemyType.ROCKET){
-            GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
-            this.explosionEffect();
-            Destroy(this.gameObject);
-        }
+        if(type == enemyType.ROCKET)
+            enemyDeath();
         else
             isGoingRight = !isGoingRight;
     }
@@ -144,11 +147,17 @@ public class Enemy : MonoBehaviour
     private void collisionWithWalls(){
         if(type == enemyType.SHOOTER)
             isGoingRight = !isGoingRight;
-        else {
-            GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
-            this.explosionEffect();
-            Destroy(this.gameObject);
-        }
+        else
+            enemyDeath();
+    }
+
+    private void enemyDeath()
+    {
+        GameObject.Find("GameController").GetComponent<GameController>().enemyDown();
+
+        this.explosionEffect();
+
+        Destroy(this.gameObject);
     }
 
     public void enemiesScore(){

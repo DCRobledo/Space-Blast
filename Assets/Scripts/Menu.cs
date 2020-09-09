@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    // Start is called before the first frame update
     void Start()
     {
         GameObject.Find("Transition").GetComponent<Image>().enabled = true;
@@ -17,12 +16,6 @@ public class Menu : MonoBehaviour
     private IEnumerator waitForFadeIn() {
         yield return new WaitForSeconds(2f);
         GameObject.Find("Transition").GetComponent<Image>().enabled = false;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void playButtonPressed() {

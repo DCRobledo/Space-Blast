@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour {
-
     public Text score;
     public Text time;
     public Text ready;
@@ -26,15 +25,11 @@ public class UI : MonoBehaviour {
 
     private bool gameOn = false;
 
-    // Start is called before the first frame update
     void Start()
     {
-        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
-
         startGame();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if(gameOn)
@@ -42,17 +37,20 @@ public class UI : MonoBehaviour {
 
         updateLives();
         updateScore();
+
     }
 
     private void startGame() {
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
         ready.GetComponent<Text>().enabled = false;
         go.GetComponent<Text>().enabled = false;
 
-        StartCoroutine(waitForFadeIn());
+        StartCoroutine(waitForFadeIn(2f));
     }
 
-    private IEnumerator waitForFadeIn() {
-        yield return new WaitForSeconds(2f);
+    private IEnumerator waitForFadeIn(float delay) {
+        yield return new WaitForSeconds(delay);
 
         GameObject.Find("Transition").GetComponent<Image>().enabled = false;
 
@@ -72,9 +70,7 @@ public class UI : MonoBehaviour {
     private IEnumerator goRoutine(float delay){
         go.GetComponent<Text>().enabled = true;
 
-        this.gameOn = true;
-        GameObject.Find("Player").GetComponent<Player>().gameOn = true;
-        GameObject.Find("GameController").GetComponent<GameController>().gameOn = true;
+        changeGameStatus(true);
 
         yield return new WaitForSeconds(delay);
 
@@ -113,31 +109,51 @@ public class UI : MonoBehaviour {
     }
 
     public void playerHit(){
-        if(!GameObject.Find("Player").GetComponent<Player>().isRecovering) {
+        if(!GameObject.Find("Player").GetComponent<Player>().isRecovering)
+        {
             GameObject.Find("Main Camera").GetComponent<Animator>().SetTrigger("cameraShake");
 
             StartCoroutine(GameObject.Find("Player").GetComponent<Player>().recover());
-            if(!GameObject.Find("Player").GetComponent<Player>().shieldUp) {
-                playerLives--;
-                GameObject.Find("Player").GetComponent<Player>().playSoundEffect(playerHitSoundEffect);
-            }
-            else {
-                GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
-                GameObject.Find("Player").GetComponent<Player>().shieldExplosionEffect();
-                GameObject.Find("Player").GetComponent<Player>().playSoundEffect(shieldDownSoundEffect);
-            }
 
-            if(playerLives == 0) {
-                GameObject.Find("Player").GetComponent<Player>().playerExplosionEffect();
-                GameObject.Find("GameController").GetComponent<GameController>().playPlayerExplosionSoundEffect();
-                GameObject.Find("Player").GetComponent<Animator>().enabled = false;
-                GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
-                gameOver();
-            }
+            shieldAndLivesManagement();
+
+            checkGameOver();
         }
     }
 
-    private void gameOver() {
+    private void checkGameOver()
+    {
+        if (playerLives == 0)
+        {
+            GameObject.Find("Player").GetComponent<Player>().playerExplosionEffect();
+            GameObject.Find("GameController").GetComponent<GameController>().playPlayerExplosionSoundEffect();
+            gameOver();
+        }
+    }
+
+    private void shieldAndLivesManagement()
+    {
+        if (!GameObject.Find("Player").GetComponent<Player>().shieldUp)
+        {
+            playerLives--;
+            GameObject.Find("Player").GetComponent<Player>().playSoundEffect(playerHitSoundEffect);
+        }
+        else
+        {
+            GameObject.Find("Player").GetComponent<Player>().shieldUp = false;
+            GameObject.Find("Player").GetComponent<Player>().shieldExplosionEffect();
+            GameObject.Find("Player").GetComponent<Player>().playSoundEffect(shieldDownSoundEffect);
+        }
+    }
+
+    private void gameOver()
+    {
+        //Stop the game
+        changeGameStatus(false);
+
+        //Hide the player
+        hidePlayer();
+
         //Pause Music
         GameObject.Find("Level").GetComponent<AudioSource>().Stop();
 
@@ -150,6 +166,19 @@ public class UI : MonoBehaviour {
         StartCoroutine(gameOverTextRoutine(1.5f));
     }
 
+    private static void hidePlayer()
+    {
+        GameObject.Find("Player").GetComponent<Animator>().enabled = false;
+        GameObject.Find("Player").GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    private void changeGameStatus(bool status)
+    {
+        this.gameOn = status;
+        GameObject.Find("Player").GetComponent<Player>().gameOn = status;
+        GameObject.Find("GameController").GetComponent<GameController>().gameOn = status;
+    }
+
     private IEnumerator gameOverTextRoutine(float delay){
         yield return new WaitForSeconds(1f);
 
@@ -159,7 +188,7 @@ public class UI : MonoBehaviour {
 
         gameOverText.GetComponent<Text>().enabled = false;
 
-        StartCoroutine(processAfterGameOver(2f));
+        StartCoroutine(processAfterGameOver(1.5f));
     }
 
     private void destroyEntities(){
@@ -181,13 +210,13 @@ public class UI : MonoBehaviour {
     }
 
     private IEnumerator processAfterGameOver (float delay){
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
         GameObject.Find("Transition").GetComponent<Animator>().SetTrigger("fadeOut");
 
         yield return new WaitForSeconds(delay);
 
         SceneManager.LoadScene("GameOver");
     }
-
 
     public void addScore(int score) {
         playerScore += score;

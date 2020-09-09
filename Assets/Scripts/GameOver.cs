@@ -23,11 +23,6 @@ public class GameOver : MonoBehaviour
         GameObject.Find("Transition").GetComponent<Image>().enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void setRecord(){
         GameObject stats = GameObject.Find("Stats");
