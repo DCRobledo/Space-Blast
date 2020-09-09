@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***************** PROJECTILES *****************/
 public class Projectile : MonoBehaviour
 {
+    //Speed management
     public float projectileSpeed;
 
+    //Player's and Enemies' projectiles diferentiation
     public bool isPlayerProjectile = true;
 
+    //Visual Effect
     public GameObject effect;
 
 
+    /***************** STARTING METHODS *****************/
     void Start()
     {
         projectileEffect();
@@ -23,14 +28,18 @@ public class Projectile : MonoBehaviour
         newEffect.transform.SetParent(GameObject.Find("Effects").transform);
     }
 
+
+    /***************** UPDATING METHODS *****************/
     void Update()
     {
         moveProjectile();
     }
 
+    /***************** MOVEMENT *****************/
     private void moveProjectile(){
         Vector3 pos = this.transform.localPosition;
 
+        //We move player's projectiles upwards and enemies' downwards
         if(isPlayerProjectile)
             pos.y += projectileSpeed * Time.deltaTime;
         else
@@ -39,6 +48,8 @@ public class Projectile : MonoBehaviour
         this.transform.localPosition = pos;
     }
 
+
+    /***************** COLLISIONS *****************/
     private void OnCollisionEnter2D(Collision2D collider) {
         if(isPlayerProjectile)
             checkCollisionOnEnemy(collider);

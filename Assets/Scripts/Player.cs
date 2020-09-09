@@ -2,36 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***************** PLAYER *****************/
 public class Player : MonoBehaviour {
+    //Speed management
     public float idleSpeed;
     public float boostedSpeed;
     
+    //Visual effects
     public GameObject playerProjectile;
     public GameObject shieldEffect;
     public GameObject playerEffect;
 
+    //Animator component
     public Animator animator;
 
+    //Hitting management
     public bool isRecovering = false;
     public bool shieldUp = false;
+
+    //Game Status management
     public bool gameOn = false;
 
+    //Rigidbody2D component
     private Rigidbody2D rb;
 
+    //Player's speed management
     private float playerSpeed;
 
+    //Shooting management
     private float shootTimer = 0f;
     private float shootTimeLimit = 6f;
 
+    //SpeedBoost management
     private float speedBoostTimer = 11f;
     private float speedBoostTimeLimit = 10f;
 
+    //ShootBoost management
     private float shootBoostTimer = 6f;
     private float shootBoostTimeLimit = 5f;
 
+    //Shooting management
     private bool canShot = true;
+    
 
-
+    /***************** STARTING METHODS *****************/
     void Start()
     {
         setRigidBody2D();
@@ -46,11 +60,14 @@ public class Player : MonoBehaviour {
     private void setRigidBody2D()
     {
         rb = this.GetComponent<Rigidbody2D>();
+        //Prevent the player from rotating on collisions
         rb.freezeRotation = true;
     }
 
-    // Update is called once per frame
+
+    /***************** UPDATING METHODS *****************/
     void Update() {
+        //We only allow movement if the game have already started
         if(gameOn)
             checkInput();
 
@@ -68,21 +85,22 @@ public class Player : MonoBehaviour {
     }
 
     private void updateAnimations() {
+        //Animator's state machine's bools management
         animator.SetBool("isRecovery", this.isRecovering);
+
+        //We set the animator's bool based on the management variables
+        // timer <= timeLimit -> We are inside the boost effect
+        // timer > timeLimit -> We are not inside the boost effect
         animator.SetBool("shootBoost", (shootBoostTimer <= shootBoostTimeLimit));
         animator.SetBool("speedBoost", (speedBoostTimer <= speedBoostTimeLimit));
     }
 
+
+    /***************** MOVEMENT & SHOOTING *****************/
     private void checkInput()
     {
         checkMovementInput();
         checkShootingInput();
-    }
-
-    private void checkShootingInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && canShot)  
-            shoot();
     }
 
     private void checkMovementInput()
@@ -98,6 +116,12 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.S))
             movePlayer("y", -1);
+    }
+
+    private void checkShootingInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && canShot)  
+            shoot();
     }
 
     private void movePlayer(string direction, int forward){
@@ -129,6 +153,8 @@ public class Player : MonoBehaviour {
         projectile.transform.localPosition = new Vector3 (pos.x, pos.y + .7f, pos.z);
     }
 
+
+    /***************** HIT REGISTRATION *****************/
     public IEnumerator recover() {
         isRecovering = true;
 
@@ -142,6 +168,8 @@ public class Player : MonoBehaviour {
             shieldUp = true;
     }
 
+
+    /***************** POWER-UPS *****************/
     private void updateShield() {
         GameObject.Find("shield").GetComponent<SpriteRenderer>().enabled = shieldUp;
     }
@@ -173,6 +201,8 @@ public class Player : MonoBehaviour {
             playerSpeed = idleSpeed;
     }
 
+
+    /***************** VISUAL EFFECTS *****************/
     public void shieldExplosionEffect(){
         GameObject newObj = Instantiate(shieldEffect, transform.position, Quaternion.identity);
         newObj.name = "Explosion Effect";
@@ -185,6 +215,8 @@ public class Player : MonoBehaviour {
         newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
 
+
+    /***************** AUDIO EFFECTS *****************/
     public void playSoundEffect(AudioClip clip) {
         this.GetComponent<AudioSource>().PlayOneShot(clip);
     }

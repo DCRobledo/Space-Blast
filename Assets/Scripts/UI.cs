@@ -4,32 +4,45 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/***************** USER INTERFACE *****************/
 public class UI : MonoBehaviour {
+    //Texts
     public Text score;
     public Text time;
     public Text ready;
     public Text go;
     public Text gameOverText;
 
+    //Images
     public Image live0;
     public Image live1;
     public Image live2;
 
+    //Audio Effects
     public AudioClip shieldDownSoundEffect;
     public AudioClip playerHitSoundEffect;
 
+    //Time management
     private float timeCounter = 0f;
 
+    //Score management
     private int playerScore = 0;
+
+    //Lives management
     private int playerLives = 3;
 
+    //Game Status management
     private bool gameOn = false;
 
+
+    /***************** STARTING METHODS *****************/
     void Start()
     {
         startGame();
     }
 
+
+    /***************** UPDATING METHODS *****************/
     void Update()
     {
         if(gameOn)
@@ -39,43 +52,6 @@ public class UI : MonoBehaviour {
         updateScore();
 
     }
-
-    private void startGame() {
-        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
-
-        ready.GetComponent<Text>().enabled = false;
-        go.GetComponent<Text>().enabled = false;
-
-        StartCoroutine(waitForFadeIn(2f));
-    }
-
-    private IEnumerator waitForFadeIn(float delay) {
-        yield return new WaitForSeconds(delay);
-
-        GameObject.Find("Transition").GetComponent<Image>().enabled = false;
-
-        StartCoroutine(readyRoutine(2f));
-    }
-
-    private IEnumerator readyRoutine(float delay){
-        ready.GetComponent<Text>().enabled = true;
-
-        yield return new WaitForSeconds(delay);
-
-        ready.GetComponent<Text>().enabled = false;
-
-        StartCoroutine(goRoutine(1.5f));
-    }
-
-    private IEnumerator goRoutine(float delay){
-        go.GetComponent<Text>().enabled = true;
-
-        changeGameStatus(true);
-
-        yield return new WaitForSeconds(delay);
-
-        go.GetComponent<Text>().enabled = false;
-    } 
 
     private void updateTime() {
         timeCounter += Time.deltaTime;
@@ -108,6 +84,8 @@ public class UI : MonoBehaviour {
         this.score.GetComponent<Text>().text = playerScore.ToString("00000");
     }
 
+
+    /***************** HIT REGISTRATION *****************/
     public void playerHit(){
         if(!GameObject.Find("Player").GetComponent<Player>().isRecovering)
         {
@@ -146,6 +124,63 @@ public class UI : MonoBehaviour {
         }
     }
 
+    public void addScore(int score) {
+        playerScore += score;
+    }
+
+
+    /***************** ENTRANCE ANIMATION *****************/
+    private void startGame() {
+        //Activate transition's image
+        GameObject.Find("Transition").GetComponent<Image>().enabled = true;
+
+        //Hide texts
+        ready.GetComponent<Text>().enabled = false;
+        go.GetComponent<Text>().enabled = false;
+
+        //Next Step
+        StartCoroutine(waitForFadeIn(2f));
+    }
+
+    private IEnumerator waitForFadeIn(float delay) {
+        //Wait for fade in
+        yield return new WaitForSeconds(delay);
+
+        //Deactivate transition's image
+        GameObject.Find("Transition").GetComponent<Image>().enabled = false;
+
+        //Next Step
+        StartCoroutine(readyRoutine(2f));
+    }
+
+    private IEnumerator readyRoutine(float delay){
+        //Show ready text
+        ready.GetComponent<Text>().enabled = true;
+
+        yield return new WaitForSeconds(delay);
+
+        //Hide ready text
+        ready.GetComponent<Text>().enabled = false;
+
+        //Next Step
+        StartCoroutine(goRoutine(1.5f));
+    }
+
+    private IEnumerator goRoutine(float delay){
+        //Show go text
+        go.GetComponent<Text>().enabled = true;
+
+        //Start the game
+        changeGameStatus(true);
+
+        yield return new WaitForSeconds(delay);
+
+        //Hide go text
+        go.GetComponent<Text>().enabled = false;
+    } 
+
+
+    /***************** GAME-OVER ANIMATION *****************/
     private void gameOver()
     {
         //Stop the game
@@ -163,6 +198,7 @@ public class UI : MonoBehaviour {
         //Pass Stats
         passStats();
 
+        //Next Step
         StartCoroutine(gameOverTextRoutine(1.5f));
     }
 
@@ -182,12 +218,15 @@ public class UI : MonoBehaviour {
     private IEnumerator gameOverTextRoutine(float delay){
         yield return new WaitForSeconds(1f);
 
+        //Show game over text
         gameOverText.GetComponent<Text>().enabled = true;
 
         yield return new WaitForSeconds(delay);
 
+        //Hide game over text
         gameOverText.GetComponent<Text>().enabled = false;
 
+        //Next step
         StartCoroutine(processAfterGameOver(1.5f));
     }
 
@@ -210,15 +249,13 @@ public class UI : MonoBehaviour {
     }
 
     private IEnumerator processAfterGameOver (float delay){
+        //Start fade out
         GameObject.Find("Transition").GetComponent<Image>().enabled = true;
         GameObject.Find("Transition").GetComponent<Animator>().SetTrigger("fadeOut");
 
         yield return new WaitForSeconds(delay);
 
+        //Change scene
         SceneManager.LoadScene("GameOver");
-    }
-
-    public void addScore(int score) {
-        playerScore += score;
     }
 }

@@ -4,10 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+/***************** MENU *****************/
 public class Menu : MonoBehaviour
 {
+    /***************** STARTING METHODS *****************/
     void Start()
     {
+        //We need to first enable the transition's image
         GameObject.Find("Transition").GetComponent<Image>().enabled = true;
 
         StartCoroutine(waitForFadeIn());
@@ -15,9 +18,13 @@ public class Menu : MonoBehaviour
 
     private IEnumerator waitForFadeIn() {
         yield return new WaitForSeconds(2f);
+
+        //We hide the transition's image in order to be able to press the buttons
         GameObject.Find("Transition").GetComponent<Image>().enabled = false;
     }
 
+
+    /***************** PLAY BUTTON *****************/
     public void playButtonPressed() {
         StartCoroutine(processAfterPlayButtonPressed(1.5f));
     }
@@ -32,6 +39,8 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene("Level");
     }
 
+
+    /***************** EXIT BUTTON *****************/
     public void exitButtonPressed() {
         StartCoroutine(processAfterExitButtonPressed(1.5f));
     }

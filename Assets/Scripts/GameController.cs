@@ -2,29 +2,41 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***************** GAME CONTROLLER *****************/
 public class GameController : MonoBehaviour
 {
+    //Enemies
     public List<Entity> enemies = new List<Entity>();
+
+    //Power-Ups
     public List<Entity> powerUps = new List<Entity>();
 
+    //Audio effects
     public AudioClip playerExplosionSoundEffect;
     public AudioClip enemyExplosionSoundEffect;
 
+    //Game Status management
     public bool gameOn = false;
 
+    //Entities accounting
     private int numEnemies = 0;
     private int numPowerUps = 0;
 
+    //Spawns management
     private bool canSpawnEnemy = true;
     private bool canSpawnPowerUp = true;
 
+    //Player entity
     private GameObject player;
 
+
+    /***************** STARTING METHODS *****************/
     void Start()
     {
         player = GameObject.Find("Player");
     }
 
+    /***************** UPDATING METHODS *****************/
     void Update()
     {
         checkSpawns();
@@ -43,6 +55,7 @@ public class GameController : MonoBehaviour
         spawnEntity(powerUps, canSpawnPowerUp, false);
     }
 
+    /***************** SPAWNS *****************/
     private void spawnEntity(List<Entity> list, bool controller, bool isEnemy){
         //Select the entity
         int entitySelector = Random.Range(0, list.Count);
@@ -108,9 +121,12 @@ public class GameController : MonoBehaviour
 
     private bool spawnChanceControl (Entity entity, bool controller) {
         int rnd = Random.Range(0, 1000);
+
+        //We constrain the spawn to spawnChance/1000 of the time
         return (rnd <= entity.spawnChance && controller);
     }
 
+    /***************** HIT REGISTRATIONS *****************/
     public void enemyDown(){
         numEnemies--;
         playEnemyExplosionSoundEffect();
@@ -121,11 +137,13 @@ public class GameController : MonoBehaviour
     }
 
     private IEnumerator processAfterPowerUpDown() {
+        //We wait until the current power-up's effects pass out before spawing another one
         yield return new WaitForSeconds(10f);
 
         numPowerUps--;
     }
 
+    /***************** AUDIO EFFECTS *****************/
     private void playEnemyExplosionSoundEffect() {
         this.GetComponent<AudioSource>().PlayOneShot(enemyExplosionSoundEffect);
     }
@@ -135,15 +153,19 @@ public class GameController : MonoBehaviour
     }
 }
 
+/***************** ENTITY CLASS *****************/
 [System.Serializable]
 public class Entity {
+    //Prefab
     public GameObject entity;
 
+    //Spawning limits
     [Range(-10, 5)]
     public int[] xLimits = new int[2];
     [Range(4, -3)]
     public int[] yLimits = new int[2];
 
+    //Spawning chance
     [Range(0, 100)]
     public int spawnChance;
 }

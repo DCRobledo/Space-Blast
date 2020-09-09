@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/***************** POWER-UPS *****************/
 public class PowerUp : MonoBehaviour {
+    //Power-Up type diferentiation
     public enum powerUpType {
         SHIELD,
         SHOOTBOOST,
@@ -11,11 +13,13 @@ public class PowerUp : MonoBehaviour {
 
     public powerUpType type;
 
+    //Visual Effect
     public GameObject effect;
 
+    //Audio Effect
     public AudioClip soundEffect;
     
-
+    /***************** COLLISIONS *****************/
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.gameObject.tag.Equals("Player"))
@@ -23,12 +27,14 @@ public class PowerUp : MonoBehaviour {
         
     }
 
+    /***************** BOOST ACTIVATION *****************/
     private void playerPicksUpPowerUp()
     {
         GameObject.Find("GameController").GetComponent<GameController>().powerUpDown();
 
         powerUpEffect();
 
+        //We call the corresponding player script's method based on the power-up's type
         switch (type)
         {
             case powerUpType.SHIELD: GameObject.Find("Player").GetComponent<Player>().shield(); break;
@@ -39,6 +45,7 @@ public class PowerUp : MonoBehaviour {
         Destroy(this.gameObject);
     }
 
+    /***************** VISUAL & AUDIO EFFECTS *****************/
     private void powerUpEffect()
     {
         GameObject.Find("Player").GetComponent<Player>().playSoundEffect(soundEffect);
