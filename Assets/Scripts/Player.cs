@@ -2,86 +2,126 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+/***************** PLAYER *****************/
+public class Player : MonoBehaviour {
+    //Speed management
     public float idleSpeed;
     public float boostedSpeed;
     
+    //Visual effects
     public GameObject playerProjectile;
     public GameObject shieldEffect;
     public GameObject playerEffect;
 
+    //Animator component
     public Animator animator;
 
+    //Hitting management
     public bool isRecovering = false;
     public bool shieldUp = false;
+
+    //Game Status management
     public bool gameOn = false;
 
+    //Rigidbody2D component
     private Rigidbody2D rb;
 
+    //Player's speed management
     private float playerSpeed;
 
+    //Shooting management
     private float shootTimer = 0f;
     private float shootTimeLimit = 6f;
 
+    //SpeedBoost management
     private float speedBoostTimer = 11f;
     private float speedBoostTimeLimit = 10f;
 
-    public float shootBoostTimer = 6f;
+    //ShootBoost management
+    private float shootBoostTimer = 6f;
     private float shootBoostTimeLimit = 5f;
 
+    //Shooting management
     private bool canShot = true;
     
 
-    // Start is called before the first frame update
+    /***************** STARTING METHODS *****************/
     void Start()
     {
-        rb = this.GetComponent<Rigidbody2D>();
-        rb.freezeRotation = true;
+        setRigidBody2D();
+        setAnimator();
+    }
 
+    private void setAnimator()
+    {
         animator = this.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void setRigidBody2D()
     {
+        rb = this.GetComponent<Rigidbody2D>();
+        //Prevent the player from rotating on collisions
+        rb.freezeRotation = true;
+    }
+
+
+    /***************** UPDATING METHODS *****************/
+    void Update() {
+        //We only allow movement if the game have already started
         if(gameOn)
             checkInput();
 
         checkCanShoot();
+
         updatePowerUps();
+
         updateAnimations();
     }
 
-    private void updatePowerUps(){
+    private void updatePowerUps() {
         updateShield();
         updateShootBoost();
         updateSpeedBoost();
     }
 
     private void updateAnimations() {
+        //Animator's state machine's bools management
         animator.SetBool("isRecovery", this.isRecovering);
+
+        //We set the animator's bool based on the management variables
+        // timer <= timeLimit -> We are inside the boost effect
+        // timer > timeLimit -> We are not inside the boost effect
         animator.SetBool("shootBoost", (shootBoostTimer <= shootBoostTimeLimit));
         animator.SetBool("speedBoost", (speedBoostTimer <= speedBoostTimeLimit));
     }
 
-    private void checkInput(){
-        if(Input.GetKey(KeyCode.W))
+
+    /***************** MOVEMENT & SHOOTING *****************/
+    private void checkInput()
+    {
+        checkMovementInput();
+        checkShootingInput();
+    }
+
+    private void checkMovementInput()
+    {
+        if (Input.GetKey(KeyCode.W))
             movePlayer("y", 1);
 
-        if(Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
             movePlayer("x", 1);
 
-        if(Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.A))
             movePlayer("x", -1);
 
-        if(Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
             movePlayer("y", -1);
+    }
 
-        if(Input.GetKeyDown(KeyCode.Space) && canShot){
-            shootTimer = 0f;
-            shoot(); 
-        } 
+    private void checkShootingInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && canShot)  
+            shoot();
     }
 
     private void movePlayer(string direction, int forward){
@@ -102,6 +142,8 @@ public class Player : MonoBehaviour
     }
 
     private void shoot() {
+        shootTimer = 0f;
+
         GameObject projectile = GameObject.Instantiate(playerProjectile);
 
         projectile.name = "PlayerProjectile";
@@ -111,7 +153,9 @@ public class Player : MonoBehaviour
         projectile.transform.localPosition = new Vector3 (pos.x, pos.y + .7f, pos.z);
     }
 
-    public IEnumerator recover(){
+
+    /***************** HIT REGISTRATION *****************/
+    public IEnumerator recover() {
         isRecovering = true;
 
         yield return new WaitForSeconds(2f);
@@ -119,11 +163,13 @@ public class Player : MonoBehaviour
         isRecovering = false;
     }
 
-    public void shield(){
+    public void shield() {
         if(!shieldUp)
             shieldUp = true;
     }
 
+
+    /***************** POWER-UPS *****************/
     private void updateShield() {
         GameObject.Find("shield").GetComponent<SpriteRenderer>().enabled = shieldUp;
     }
@@ -155,6 +201,8 @@ public class Player : MonoBehaviour
             playerSpeed = idleSpeed;
     }
 
+
+    /***************** VISUAL EFFECTS *****************/
     public void shieldExplosionEffect(){
         GameObject newObj = Instantiate(shieldEffect, transform.position, Quaternion.identity);
         newObj.name = "Explosion Effect";
@@ -167,6 +215,8 @@ public class Player : MonoBehaviour
         newObj.transform.SetParent(GameObject.Find("Effects").transform);
     }
 
+
+    /***************** AUDIO EFFECTS *****************/
     public void playSoundEffect(AudioClip clip) {
         this.GetComponent<AudioSource>().PlayOneShot(clip);
     }
